@@ -13,6 +13,18 @@ The agent calls `okx-affiliate-performance-summary` with the matching `periodTyp
 (`last_30d`, `this_month`, `last_month`) — or with `begin` + `end` Unix-ms timestamps for
 custom ranges like Q1.
 
+## TVB (Trading Volume Bonus)
+
+> *"What's my trading-volume bonus this month?"*
+> *"How much TVB have I accrued in the last 30 days?"*
+> *"Show my TVB summary for Q1 2026."*
+
+→ `affiliate_tvb_get_performance_summary` with the matching `periodType` (`this_month`,
+`last_30d`) — or `periodType: custom` with `begin` + `end` Unix-ms timestamps for ranges like
+Q1 (custom windows are capped at **365 days**). The bonus is settled in **USDC** and scaled by
+your `multiplier` (e.g. `"0.5"` = 50%). Distinct from the commission-based
+`okx-affiliate-performance-summary` above.
+
 ## Invitee analysis
 
 > *"List my top 10 invitees by commission this quarter."*

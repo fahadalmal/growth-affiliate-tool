@@ -15,7 +15,7 @@ metadata:
 Install, authorize, and keep alive the OKX Growth Affiliate MCP
 (`https://www.okx.com/api/v1/mcp/growth-affiliate-mcp`) on Hermes Agent.
 
-After install, Hermes exposes 6 tools (named `mcp_okx_affiliate_*`):
+After install, Hermes exposes 7 tools (named `mcp_okx_affiliate_*`):
 
 - `okx-affiliate-performance-summary`
 - `okx-affiliate-invitee-list`
@@ -23,6 +23,7 @@ After install, Hermes exposes 6 tools (named `mcp_okx_affiliate_*`):
 - `okx-affiliate-link-list`
 - `okx-affiliate-sub-affiliate-list`
 - `okx-affiliate-co-inviter-list`
+- `affiliate_tvb_get_performance_summary` (TVB / Trading Volume Bonus summary)
 
 See `reference/tools-overview.md` for what each one returns.
 

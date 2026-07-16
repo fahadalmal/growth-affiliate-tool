@@ -94,6 +94,7 @@ You can always re-run `/mcp` (or your agent's equivalent) to widen scopes later.
 | 4  | `okx-affiliate-link-list`             | Your invite links + commission rates + cumulative stats (incl. 24h commission) |
 | 5  | `okx-affiliate-sub-affiliate-list`    | Sub-affiliates in your MLRS network (lifetime data)  |
 | 6  | `okx-affiliate-co-inviter-list`       | Channels where you are listed as a co-inviter        |
+| 7  | `affiliate_tvb_get_performance_summary` | TVB (Trading Volume Bonus) aggregate summary — accrued bonus, valid/eligible volume, valid invitee/trader counts, FTT/FTD, multiplier; settled in USDC |
 
 Full parameters and return fields → [`docs/tools-reference.md`](docs/tools-reference.md).
 
