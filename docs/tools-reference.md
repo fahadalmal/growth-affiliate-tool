@@ -275,7 +275,7 @@ invitees. Returns a single summary object inside a one-element `data` array.
 | `end`        | string | When `custom` | —      | Custom-range end, **Unix milliseconds**, inclusive. Required with `begin`. Ignored unless `periodType=custom`.                                          |
 
 > ⚠️ Unlike the other tools, TVB summary exposes `custom` as an **explicit** `periodType`
-> value, and the custom window (`end - begin`) **must not exceed 180 days**.
+> value, and the custom window (`end - begin`) **must not exceed 90 days**.
 
 ### Return shape
 
