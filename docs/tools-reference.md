@@ -266,6 +266,11 @@ time window. Unlike the commission-based tools above, TVB is a bonus program **s
 USDC**: the affiliate earns a `multiplier`-scaled bonus on eligible trading volume from valid
 invitees. Returns a single summary object inside a one-element `data` array.
 
+> ℹ️ **Availability & cadence:** TVB is currently offered in **select regions only** —
+> affiliates outside supported regions get all-zero results (not an error). The bonus
+> **accrues hourly** and settles in **USDC**, so figures can lag real activity by up to ~1h;
+> `uTime` marks the last hourly update.
+
 ### Parameters
 
 | Param        | Type   | Required     | Default | Description                                                                                                                                            |
@@ -316,7 +321,7 @@ invitees. Returns a single summary object inside a one-element `data` array.
 | `validFirstDepositorCnt`    | Valid first-time depositors / FTD (dedup count)                                   |
 | `multiplier`                | Affiliate's bonus multiplier as a decimal ratio (e.g. `"0.5"` = 50%)             |
 | `ccy`                       | Settlement currency. Constant `"USDC"`                                            |
-| `uTime`                     | Last data-update timestamp, Unix ms (`""` when the table has no partition yet)    |
+| `uTime`                     | Last **hourly** data-update timestamp, Unix ms (`""` when the table has no partition yet) |
 
 > All numeric values are returned as **decimal strings** — parse with `Decimal` / `BigDecimal`
 > to preserve precision.
