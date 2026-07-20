@@ -43,7 +43,7 @@ You can omit `periodType` entirely when passing `begin` + `end`. The server trea
   daily anomalies without losing precision.
 - **`affiliate_tvb_get_performance_summary` differs slightly:** it accepts `custom` as an
   **explicit** `periodType` value (the other tools infer custom from the presence of
-  `begin`/`end`), and its custom window is additionally capped at **365 days**.
+  `begin`/`end`), and its custom window is additionally capped at **180 days**.
 
 ## Common mistakes
 

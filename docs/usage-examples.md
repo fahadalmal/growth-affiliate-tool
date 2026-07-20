@@ -21,7 +21,7 @@ custom ranges like Q1.
 
 → `affiliate_tvb_get_performance_summary` with the matching `periodType` (`this_month`,
 `last_30d`) — or `periodType: custom` with `begin` + `end` Unix-ms timestamps for ranges like
-Q1 (custom windows are capped at **365 days**). The bonus is settled in **USDC** and scaled by
+Q1 (custom windows are capped at **180 days**). The bonus is settled in **USDC** and scaled by
 your `multiplier` (e.g. `"0.5"` = 50%). Distinct from the commission-based
 `okx-affiliate-performance-summary` above.
 
