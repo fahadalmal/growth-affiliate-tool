@@ -91,6 +91,9 @@ Agent ❯ ⚠️ 生涯前 50 用户里只有 23 个还在活跃。
 | 4  | `okx-affiliate-link-list`             | 邀请链接 + 佣金比例 + 累计数据（含 24 小时佣金）   |
 | 5  | `okx-affiliate-sub-affiliate-list`    | MLRS 网络中的子节点（生涯数据）                    |
 | 6  | `okx-affiliate-co-inviter-list`       | 助力人分析                                         |
+| 7  | `affiliate_tvb_get_performance_summary` | TVB（交易量奖金）聚合汇总——累计奖金、有效/合格交易量、有效邀请人/交易者数、FTT/FTD、倍率；以 USDC 结算 |
+
+> ℹ️ **可用性与更新频率：** TVB 目前仅在部分地区开放——非支持地区的 affiliate 会得到全 0 结果（而非报错）。奖金每小时累计，以 USDC 结算，数据相较真实活动最多可能有约 1 小时延迟；`uTime` 表示最近一次每小时更新的时间。
 
 完整参数和返回字段 → [`docs/tools-reference.md`](docs/tools-reference.md)。
 

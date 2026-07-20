@@ -1,6 +1,6 @@
 # Tools reference
 
-Six MCP tools, all read-only. Every tool that takes a time period uses the same
+Seven MCP tools, all read-only. Every tool that takes a time period uses the same
 [`periodType` codes](period-type.md).
 
 | #  | Tool                                                              | Purpose                          |
@@ -11,6 +11,7 @@ Six MCP tools, all read-only. Every tool that takes a time period uses the same
 | 4  | [`okx-affiliate-link-list`](#4-link-list)                         | Your invite links                |
 | 5  | [`okx-affiliate-sub-affiliate-list`](#5-sub-affiliate-list)       | Sub-affiliates in MLRS network   |
 | 6  | [`okx-affiliate-co-inviter-list`](#6-co-inviter-list)             | Channels where you co-invite     |
+| 7  | [`affiliate_tvb_get_performance_summary`](#7-tvb-performance-summary) | TVB (Trading Volume Bonus) summary |
 
 > **Naming note:** All numeric values in the schema (page, limit, periodType, etc.) are passed
 > as **strings**, not integers. Pass `"1"`, not `1`.
@@ -253,6 +254,77 @@ Channels where you are listed as a co-inviter (i.e. you share commission on thos
 
 Channel name, your commission share, partner / co-inviter UIDs, invitee stats, channel
 status. The schema is rich (~22 fields per row).
+
+---
+
+## 7. TVB performance summary
+
+**Tool name:** `affiliate_tvb_get_performance_summary`
+
+Aggregate **TVB (Trading Volume Bonus)** performance for the connected affiliate over a chosen
+time window. Unlike the commission-based tools above, TVB is a bonus program **settled in
+USDC**: the affiliate earns a `multiplier`-scaled bonus on eligible trading volume from valid
+invitees. Returns a single summary object inside a one-element `data` array.
+
+> ℹ️ **Availability & cadence:** TVB is currently offered in **select regions only** —
+> affiliates outside supported regions get all-zero results (not an error). The bonus
+> **accrues hourly** and settles in **USDC**, so figures can lag real activity by up to ~1h;
+> `uTime` marks the last hourly update.
+
+### Parameters
+
+| Param        | Type   | Required     | Default | Description                                                                                                                                            |
+| ------------ | ------ | :----------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `periodType` | string | No           | `total` | Stats window — one of `last_7d`, `last_30d`, `this_month`, `last_month`, `this_week`, `today`, `total`, `custom`. When omitted: falls back to `custom` if both `begin` and `end` are present, otherwise `total`. |
+| `begin`      | string | When `custom` | —      | Custom-range start, **Unix milliseconds**, inclusive. Required with `end`. Ignored unless `periodType=custom`.                                          |
+| `end`        | string | When `custom` | —      | Custom-range end, **Unix milliseconds**, inclusive. Required with `begin`. Ignored unless `periodType=custom`.                                          |
+
+> ⚠️ Unlike the other tools, TVB summary exposes `custom` as an **explicit** `periodType`
+> value, and the custom window (`end - begin`) **must not exceed 90 days**.
+
+### Return shape
+
+```json
+{
+  "code": "0",
+  "msg": "",
+  "data": [{
+    "tradingVolBonus": "12500.00",
+    "validVol": "8450000.00",
+    "eligibleVol": "8200000.00",
+    "validInviteeCnt": "342",
+    "validTraderCnt": "198",
+    "eligibleTraderCnt": "176",
+    "validDepAmt": "1250000.00",
+    "validFirstTraderCnt": "54",
+    "validFirstDepositorCnt": "61",
+    "multiplier": "0.5",
+    "ccy": "USDC",
+    "uTime": "1784192118000"
+  }]
+}
+```
+
+### Field map (response)
+
+| Field                       | Meaning                                                                          |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `data[]`                    | One-element array containing the summary object                                  |
+| `tradingVolBonus`           | Accrued trading volume bonus in the window (USDC)                                 |
+| `validVol`                  | Valid trading volume in the window (USDC)                                         |
+| `eligibleVol`               | Eligible trading volume feeding the bonus, in the window (USDC)                   |
+| `validInviteeCnt`           | Valid invitees (dedup count)                                                      |
+| `validTraderCnt`            | Valid traders (dedup count)                                                       |
+| `eligibleTraderCnt`         | Eligible traders — traded and earned bonus (dedup count)                          |
+| `validDepAmt`               | Deposit from valid invitees in the window (USDC)                                  |
+| `validFirstTraderCnt`       | Valid first-time traders / FTT (dedup count)                                      |
+| `validFirstDepositorCnt`    | Valid first-time depositors / FTD (dedup count)                                   |
+| `multiplier`                | Affiliate's bonus multiplier as a decimal ratio (e.g. `"0.5"` = 50%)             |
+| `ccy`                       | Settlement currency. Constant `"USDC"`                                            |
+| `uTime`                     | Last **hourly** data-update timestamp, Unix ms (`""` when the table has no partition yet) |
+
+> All numeric values are returned as **decimal strings** — parse with `Decimal` / `BigDecimal`
+> to preserve precision.
 
 ---
 

@@ -41,6 +41,9 @@ You can omit `periodType` entirely when passing `begin` + `end`. The server trea
   activated. Custom ranges that begin before that date are silently clamped to activation.
 - For multi-day trends, prefer many small custom ranges over one big one — it lets you spot
   daily anomalies without losing precision.
+- **`affiliate_tvb_get_performance_summary` differs slightly:** it accepts `custom` as an
+  **explicit** `periodType` value (the other tools infer custom from the presence of
+  `begin`/`end`), and its custom window is additionally capped at **90 days**.
 
 ## Common mistakes
 

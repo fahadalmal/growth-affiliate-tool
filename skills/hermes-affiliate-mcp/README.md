@@ -5,9 +5,9 @@ A drop-in [Hermes Agent](https://hermes-agent.nousresearch.com) skill that insta
 the OAuth 2.0 flow that Hermes' built-in MCP client cannot run on its own — and keeps
 the bearer token fresh automatically.
 
-After install, Hermes gains six new tools (`mcp_okx_affiliate_*`) that query the OKX
+After install, Hermes gains seven new tools (`mcp_okx_affiliate_*`) that query the OKX
 Affiliate portal in natural language: performance summary, invitees, links, sub-affiliates,
-co-inviter network.
+co-inviter network, and TVB (Trading Volume Bonus) summary.
 
 ## Install
 
@@ -65,7 +65,7 @@ reference/
   blank-callback-page.md       # what to tell the user about the broken redirect page
   openclaw-config.md           # original wiring notes (kept for reference)
   verify.md                    # smoke-test recipes
-  tools-overview.md            # what each of the 6 MCP tools returns
+  tools-overview.md            # what each of the 7 MCP tools returns
 ```
 
 ## Differences from the upstream OpenClaw skill
