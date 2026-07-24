@@ -532,7 +532,7 @@ one-element `data` array. There are **no time-window parameters**.
 | `inviterUid`    | Public UID of the direct inviter (the affiliate itself for a direct invitee; a sub-affiliate's UID under MLRS). `""` when unresolvable |
 | `joinTime`      | Invite-relationship establishment time, Unix ms                                     |
 | `country`       | Country / region                                                                     |
-| `kycStatus`     | `"verified"` / `"unverified"`                                                         |
+| `kycStatus`     | `"unknown"` / `"unverified"` / `"verified"` / `"video_verified"`; `""` when compliance info is unavailable |
 | `kycTime`       | KYC time, Unix ms; `""` when not verified                                            |
 | `affiliateCode` | Invite code the invitee registered via                                               |
 | `note`          | Affiliate's private note. `""` when none                                             |
