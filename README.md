@@ -95,6 +95,10 @@ You can always re-run `/mcp` (or your agent's equivalent) to widen scopes later.
 | 5  | `okx-affiliate-sub-affiliate-list`    | Sub-affiliates in your MLRS network (lifetime data)  |
 | 6  | `okx-affiliate-co-inviter-list`       | Channels where you are listed as a co-inviter        |
 | 7  | `affiliate_tvb_get_performance_summary` | TVB (Trading Volume Bonus) aggregate summary — accrued bonus, valid/eligible volume, valid invitee/trader counts, FTT/FTD, multiplier; settled in USDC |
+| 8  | `affiliate_tvb_get_tier_breakdown`    | TVB bonus decomposed by invitee fee tier (Regular + VIP1–VIP5) — per-tier valid/eligible volume, fixed bonus rate, accrued bonus; settled in USDC |
+| 9  | `affiliate_tvb_get_invitee_list`      | Paginated TVB invitee list + affiliate-level aggregates; filter/sort by fee tier, trade type, UID (a UID may span multiple fee-tier rows) |
+| 10 | `affiliate_tvb_get_invitee_detail`    | Single TVB invitee lookup by UID — identity, KYC, fee tier, trading/eligible volume, deposit (lifetime totals) |
+| 11 | `affiliate_tvb_get_link_list`         | Paginated TVB performance per invite link / channel — valid invitees & traders, eligible volume, accrued bonus |
 
 Full parameters and return fields → [`docs/tools-reference.md`](docs/tools-reference.md).
 
