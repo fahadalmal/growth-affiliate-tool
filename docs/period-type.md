@@ -44,6 +44,17 @@ You can omit `periodType` entirely when passing `begin` + `end`. The server trea
 - **`affiliate_tvb_get_performance_summary` differs slightly:** it accepts `custom` as an
   **explicit** `periodType` value (the other tools infer custom from the presence of
   `begin`/`end`), and its custom window is additionally capped at **90 days**.
+- **`affiliate_tvb_get_tier_breakdown` differs slightly:** it accepts `custom` as an
+  **explicit** `periodType` value, its custom window is capped at **90 days**, and `begin`
+  can't be earlier than **180 days ago** (data is retained for the past 180 days only).
+- **`affiliate_tvb_get_invitee_list` differs slightly:** it accepts `custom` as an
+  **explicit** `periodType` value, its custom window is capped at **90 days**, and `begin`
+  can't be earlier than **180 days ago** (data is retained for the past 180 days only).
+- **`affiliate_tvb_get_link_list` differs slightly:** it accepts `custom` as an **explicit**
+  `periodType` value, its custom window is capped at **90 days**, and `begin` can't be
+  earlier than **180 days ago** (data is retained for the past 180 days only).
+- **`affiliate_tvb_get_invitee_detail` takes no `periodType`:** it returns lifetime totals for
+  a single invitee.
 
 ## Common mistakes
 
