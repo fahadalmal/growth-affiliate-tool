@@ -1,8 +1,9 @@
 # OKX Affiliate MCP tools — quick reference
 
-After install, Hermes Agent exposes these seven tools. The first six share the
+After install, Hermes Agent exposes these eleven tools. The first six share the
 `okx-affiliate-` prefix (omitted below; actual names are
-`mcp_okx_affiliate_okx_affiliate_<tool>`); the TVB tool has its own name (see the footnote):
+`mcp_okx_affiliate_okx_affiliate_<tool>`); the five TVB tools have their own names (see the
+footnote):
 
 | Tool                              | What it returns                                                       |
 | --------------------------------- | --------------------------------------------------------------------- |
@@ -13,9 +14,14 @@ After install, Hermes Agent exposes these seven tools. The first six share the
 | `sub-affiliate-list`              | Sub-affiliates in your MLRS network (lifetime data)                   |
 | `co-inviter-list`                 | Channels where you are listed as a co-inviter                          |
 | `affiliate_tvb_get_performance_summary` †  | TVB (Trading Volume Bonus) aggregate summary — accrued bonus, valid/eligible volume, valid invitee/trader counts, FTT/FTD, `multiplier`; settled in USDC |
+| `affiliate_tvb_get_tier_breakdown` †       | TVB bonus by invitee fee tier (Regular + VIP1–VIP5) — per-tier valid/eligible volume, fixed bonus rate, accrued bonus |
+| `affiliate_tvb_get_invitee_list` †         | Paginated TVB invitee list + affiliate aggregates; filter/sort by fee tier, trade type, UID (a UID may span multiple fee-tier rows) |
+| `affiliate_tvb_get_invitee_detail` †       | Single TVB invitee by UID — identity, KYC, fee tier, trading/eligible volume, deposit (lifetime) |
+| `affiliate_tvb_get_link_list` †            | Paginated TVB performance per invite link / channel — valid invitees & traders, eligible volume, accrued bonus |
 
-† Full canonical name (does **not** follow the `okx-affiliate-*` prefix convention); exposed
-by Hermes as `mcp_okx_affiliate_affiliate_tvb_get_performance_summary`.
+† Full canonical names (do **not** follow the `okx-affiliate-*` prefix convention); exposed by
+Hermes as `mcp_okx_affiliate_affiliate_tvb_get_*` (e.g.
+`mcp_okx_affiliate_affiliate_tvb_get_performance_summary`).
 
 Full parameter and field reference: see the upstream docs at
 <https://github.com/okx/growth-affiliate-tool/blob/master/docs/tools-reference.md>.

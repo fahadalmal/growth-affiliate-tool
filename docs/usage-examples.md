@@ -21,9 +21,32 @@ custom ranges like Q1.
 
 → `affiliate_tvb_get_performance_summary` with the matching `periodType` (`this_month`,
 `last_30d`) — or `periodType: custom` with `begin` + `end` Unix-ms timestamps for ranges like
-Q1 (custom windows are capped at **90 days**). The bonus is settled in **USDC** and scaled by
-your `multiplier` (e.g. `"0.5"` = 50%). Distinct from the commission-based
-`okx-affiliate-performance-summary` above.
+Q1 (custom windows are capped at **90 days**, and `begin` can't be earlier than **180 days
+ago**). The bonus is settled in **USDC** and scaled by your `multiplier` (e.g. `"0.5"` = 50%).
+Distinct from the commission-based `okx-affiliate-performance-summary` above.
+
+> *"Break my TVB bonus down by VIP tier for last month."*
+> *"Which fee tiers are generating the most trading-volume bonus?"*
+
+→ `affiliate_tvb_get_tier_breakdown` — one row per fee tier (Regular + VIP1–VIP5; TVB isn't
+available at VIP6+). Each row shows valid/eligible volume, the tier's fixed `bonusRate`, and
+the accrued bonus; the affiliate-level `tradingVolBonus` equals the sum of the tiers.
+
+> *"List my TVB invitees, top volume first."*
+> *"Show TVB invitees at VIP1 and VIP2 who deposited this month."*
+> *"Look up TVB invitee UID 855082962927686909."*
+
+→ `affiliate_tvb_get_invitee_list` (paginated; filter with `feeTier` codes `"0"`/`"10"`–`"18"`,
+`tradeType`, `keyword`; sort with `orderBy`/`orderDir`) or `affiliate_tvb_get_invitee_detail`
+for one UID. Note: in the list a **single UID can span multiple rows**, one per fee-tier
+segment — don't dedupe them. No per-invitee bonus is exposed.
+
+> *"Which of my invite links drive the most TVB bonus?"*
+> *"Show TVB performance for my standard links this week."*
+
+→ `affiliate_tvb_get_link_list` (paginated; filter by `linkType` = `standard`/`co_inviter` and
+`linkStatus` = `normal`/`abnormal`). Each row carries the link's valid invitees & traders,
+eligible volume, and accrued bonus.
 
 ## Invitee analysis
 
