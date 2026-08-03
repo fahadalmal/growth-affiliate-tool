@@ -136,8 +136,11 @@ It depends on the tool:
   `total` is lifetime).
 - `okx-affiliate-invitee-list` — period-scoped per row (`depAmt`, `totalFee`,
   `totalCommission`, `totalVol` apply to the requested `periodType`).
-- `okx-affiliate-invitee-detail` — **lifetime totals** (no `periodType` parameter), plus
-  `volMonth` for the current calendar-month volume.
+- `okx-affiliate-invitee-detail` — **lifetime totals** (`totalVol`, `totalCommission`,
+  `accFee`, …), plus `volMonth` for the current calendar-month volume. It now also accepts a
+  `periodType` parameter that adds one period-scoped field, `volPeriod` (volume in the chosen
+  window); `volPeriod` is returned only when `periodType` is supplied. `custom` is not
+  supported on this tool.
 - `okx-affiliate-sub-affiliate-list` — **lifetime only** (new schema removed the period
   filter for sub-affiliates).
 

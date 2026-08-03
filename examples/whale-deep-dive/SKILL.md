@@ -33,6 +33,10 @@ Returns:
 - `depAmt`, `wdAmt` — lifetime deposits and withdrawals
 - `totalVol`, `totalCommission`, `accFee` — lifetime trading
 - `volMonth` — current calendar-month volume
+- `volPeriod` — volume in a chosen window, **only when you pass `periodType`** (see Step 2)
+
+> Tip: add `"periodType": "last_30d"` to this same call to get `volPeriod` (30-day volume)
+> in one shot — no second call needed for period volume.
 
 If the call returns `code: 51621 "The user isn't your invitee"`, stop — either the UID is
 typo'd or they aren't yours. Suggest the user double-check.
@@ -40,24 +44,32 @@ typo'd or they aren't yours. Suggest the user double-check.
 ### Step 2 — Period slices
 
 Pull the user's activity in `last_30d`, `last_7d`, and `today` to spot the current trend.
-The `okx-affiliate-invitee-detail` endpoint is lifetime-only, so the agent uses
-`invitee-list` and filters to the target UID client-side:
+
+**Period volume** — call `invitee-detail` once per window with `periodType`; `volPeriod` is
+that window's volume:
+
+```json
+{ "name": "okx-affiliate-invitee-detail", "arguments": { "uid": "<UID>", "periodType": "last_30d" } }
+```
+
+Repeat with `last_7d` and (if relevant) `today`. `custom` is not supported here — for an
+arbitrary range use `invitee-list` with `begin`/`end` instead.
+
+**Period rebate** — `invitee-detail` does not scope `totalCommission`, so for period rebate
+query `invitee-list` and pin the row with the exact-match `uid` filter (one row, no paging):
 
 ```json
 {
   "name": "okx-affiliate-invitee-list",
   "arguments": {
-    "page": "1", "limit": "95",
-    "orderBy": "rebate", "orderDir": "desc",
-    "periodType": "last_30d"
+    "uid": "<UID>",
+    "periodType": "last_30d",
+    "orderBy": "rebate", "orderDir": "desc"
   }
 }
 ```
 
-Paginate until the target UID is found (or until the data array is empty). If the UID
-doesn't appear in last_30d top 95, they're effectively dormant for the period.
-
-Repeat for `last_7d` and (if relevant) `today`.
+If the row is absent for `last_30d`, the user is effectively dormant for that period.
 
 ### Step 3 — Compute derived signals
 
@@ -126,9 +138,10 @@ whole is doing — was this user a one-off win or part of a productive cohort?
 
 ## Gotchas
 
-- **`invitee-detail` is lifetime-only** — to get any period slice for a single user you
-  must paginate the period-scoped `invitee-list` and filter client-side. `keyword`
-  filter is broken in the current MCP — do not rely on it.
+- **`invitee-detail` now takes `periodType`** for a period-scoped `volPeriod` (volume only);
+  all its other totals stay lifetime. For period *rebate*, use `invitee-list` filtered by the
+  exact-match `uid` parameter (a single row — no client-side pagination needed). The old
+  `keyword` substring filter is broken in the current MCP — use `uid` instead.
 - **`volMonth` resets at UTC start of each calendar month.** On the 1st of the month it
   will be ~$0 for everyone; don't conclude churn from this alone.
 - **Withdrawal ratio is lifetime.** A user can have a 70% withdrawal ratio because of one

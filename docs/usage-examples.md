@@ -69,7 +69,9 @@ These all hit `okx-affiliate-invitee-list` with different `orderBy` and filter p
 > *"How much has UID ABC withdrawn vs deposited?"*
 
 → `okx-affiliate-invitee-detail` returns lifetime totals plus `volMonth` (current
-calendar-month volume — useful for spotting users who slowed down recently).
+calendar-month volume — useful for spotting users who slowed down recently). Pass
+`periodType` (e.g. `last_7d` / `last_30d`) to also get `volPeriod`, that user's volume in the
+chosen window, in the same call — no need to page through the invitee list.
 
 ## Links and channels
 

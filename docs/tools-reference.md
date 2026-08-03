@@ -95,8 +95,16 @@ Paginated list of your direct invitees with their trading, deposit, and KYC stat
 | `kycStatus`          | string | No       | —       | `verified` (KYC2+) / `unverified`                                                             |
 | `keyword`            | string | No       | —       | Substring match on UID or channel name                                                       |
 | `subAffiliateUid`    | string | No       | —       | Filter to invitees attributed to a specific sub-affiliate UID                                |
+| `uid`                | string | No       | —       | **Exact-match** on invitee UID(s). Single UID or up to **100** comma-separated (e.g. `"835449167911924693,835449167911924700"`). Unknown UIDs are silently skipped; if none resolve you get an empty page (never the full list). Prefer this over the broken `keyword` substring filter. |
+| `joinTimeBegin`      | string | Cond.    | —       | Lower bound on `joinTime` (relationship-established time), Unix ms, **inclusive**. Must be sent together with `joinTimeEnd`. Independent of the `periodType` stats window. |
+| `joinTimeEnd`        | string | Cond.    | —       | Upper bound on `joinTime`, Unix ms, **inclusive**. Must be sent together with `joinTimeBegin`.                                                                          |
 | `orderBy`            | string | No       | `cTime` | Sort field — `cTime` (join time) / `depAmt` / `vol` / `fee` / `rebate`                        |
 | `orderDir`           | string | No       | `desc`  | Sort order — `asc` / `desc`                                                                   |
+
+> **Join-time filter:** pass both `joinTimeBegin` and `joinTimeEnd` or neither. Equal values
+> are a valid single-point range. The span must not exceed **90 days**, and `joinTimeBegin`
+> cannot be earlier than **180 days** ago. This filter is on the *relationship-established*
+> time and is independent of the `periodType` / `begin` / `end` stats window.
 
 ### Return shape (each row)
 
@@ -135,9 +143,10 @@ Deep dive on a single invitee, by external UID.
 
 ### Parameters
 
-| Param | Type   | Required | Description                                  |
-| ----- | ------ | :------: | -------------------------------------------- |
-| `uid` | string | ✅       | The invitee's external UID (from list above) |
+| Param        | Type   | Required | Description                                                                                                                                                                                                              |
+| ------------ | ------ | :------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `uid`        | string | ✅       | The invitee's external UID (from list above)                                                                                                                                                                            |
+| `periodType` | string | No       | Stats window for the `volPeriod` field — `last_7d` / `last_30d` / `this_month` / `last_month` / `today` / `this_week` / `total`. When omitted, `volPeriod` is **not** returned. **`custom` is not supported here** — passing `custom` or any unknown value returns `51000`. (No `begin`/`end` on this tool.) |
 
 ### Return fields
 
@@ -157,12 +166,19 @@ Deep dive on a single invitee, by external UID.
   "totalVol": "1186843492.29",
   "totalCommission": "104146.07",
   "accFee": "347153.56",
-  "volMonth": "37.04"
+  "volMonth": "37.04",
+  "volPeriod": "1234.56"
 }
 ```
 
 `volMonth` is the calendar-month-to-date trading volume — useful for spotting users whose
 activity dropped this month even though their lifetime numbers look healthy.
+
+`volPeriod` is the trading volume within the `periodType` window you requested. It is **only
+present when you pass `periodType`** and omitted otherwise; `0` is returned when the user did
+not trade in the window. This lets you pull a single user's recent-window volume in one call
+instead of paginating the period-scoped invitee list. All other detail fields
+(`totalVol`, `totalCommission`, `accFee`, …) remain **lifetime** regardless of `periodType`.
 
 > ⚠️ Passing a UID that does not exist or is not your invitee returns
 > `code: 51621, msg: "The user isn't your invitee"` rather than a 404 — see
