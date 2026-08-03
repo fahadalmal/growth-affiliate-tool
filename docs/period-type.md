@@ -1,7 +1,12 @@
 # `periodType` quick reference
 
 The `periodType` parameter is shared across `okx-affiliate-performance-summary`,
-`okx-affiliate-invitee-list`, and a few others. **Values are now strings, not integers.**
+`okx-affiliate-invitee-list`, `okx-affiliate-invitee-detail`, and a few others. **Values are
+now strings, not integers.**
+
+> **`okx-affiliate-invitee-detail` is the exception:** it accepts the named windows above to
+> scope its `volPeriod` field, but does **not** support `custom` (there is no `begin`/`end` on
+> that tool). Passing `custom` or any unknown value there returns error `51000`.
 
 | Value         | Meaning                                                    |
 | ------------- | ---------------------------------------------------------- |
