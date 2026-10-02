@@ -16,6 +16,7 @@ Inspired by — and structurally compatible with — the
 | [`churn-rescue`](churn-rescue/SKILL.md)                                       | "Which whales are slipping away?" / "find users who stopped trading"  |
 | [`whale-deep-dive`](whale-deep-dive/SKILL.md)                                 | "Pull everything on UID X" / "what's this user's history"             |
 | [`acquisition-trends`](acquisition-trends/SKILL.md)                           | "Analyze my acquisition over the last N months" / "拉新趋势"            |
+| [`market-context`](market-context/SKILL.md)                                   | "Is it the market or my node?" / live market cap, Binance prices      |
 
 ## How an agent uses these
 
