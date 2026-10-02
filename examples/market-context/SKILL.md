@@ -1,14 +1,14 @@
 ---
 name: market-context
 description: |
-  Use this skill when the user wants live crypto market context alongside (or to explain) their affiliate performance — total market cap, 24h volume, BTC/ETH dominance — e.g. "why did commission drop yesterday?", "is it the market or my invitees?", "market overview", "大盘怎么样", "هل السوق هو السبب؟". Pulls real-time global metrics from the CoinMarketCap API and compares them with the affiliate node's numbers. Do NOT use for per-user analysis (use `whale-deep-dive`).
+  Use this skill when the user wants live crypto market context alongside (or to explain) their affiliate performance — total market cap, 24h volume, BTC/ETH dominance — e.g. "why did commission drop yesterday?", "is it the market or my invitees?", "market overview", "大盘怎么样", "هل السوق هو السبب؟". Pulls real-time global metrics from CoinMarketCap and per-coin prices from Binance, and compares them with the affiliate node's numbers. Do NOT use for per-user analysis (use `whale-deep-dive`).
 ---
 
 # Market context — is it the market or my node?
 
 > "Commission is down 30% — is the whole market down?"
 
-Combines live global market metrics from CoinMarketCap with the affiliate node's own
+Combines live global market metrics from CoinMarketCap and per-coin prices from Binance with the affiliate node's own
 performance so the user can tell a market-wide move from a node-specific problem.
 
 ## Setup
@@ -19,6 +19,8 @@ performance so the user can tell a market-wide move from a node-specific problem
    ```bash
    export CMC_API_KEY=your-key
    ```
+
+   Binance tickers need no key.
 
 ## When to use this skill
 
@@ -45,7 +47,23 @@ Wraps `GET https://pro-api.coinmarketcap.com/v1/global-metrics/quotes/latest` an
 
 Pass `--convert EUR` (one symbol on the Basic plan) for another quote currency.
 
-### 2. Node performance for the same window
+### 2. Live coin prices (Binance — no API key needed)
+
+```bash
+python3 examples/market-context/scripts/binance_tickers.py --json              # BTC, ETH, BNB, SOL, XRP
+python3 examples/market-context/scripts/binance_tickers.py BTCUSDT DOGEUSDT    # custom pairs
+```
+
+Wraps `GET /api/v3/ticker/24hr` and prints last price, 24h % change, high/low and quote volume
+per pair. If `api.binance.com` is region-blocked (HTTP 451), it falls back to the
+`data-api.binance.vision` market-data mirror automatically.
+
+```json
+[{"symbol":"BTCUSDT","last_price":85876.23,"change_24h_pct":2.776,
+  "high_24h":86912.75,"low_24h":83186.0,"quote_volume_24h":1734569094.86}]
+```
+
+### 3. Node performance for the same window
 
 ```json
 {
@@ -66,6 +84,7 @@ Pass `--convert EUR` (one symbol on the Basic plan) for another quote currency.
 ```
 🌍 Market (CoinMarketCap, 02:36 UTC)
    Cap $3.10T (-1.5% 24h) · Volume $120B (-22% 24h) · BTC dom 57.1%
+   Binance: BTC $85.9K (+2.8%) · ETH $2,725 (+1.3%) · SOL $121 (+2.8%)
 
 📊 Your node (yesterday vs 7d avg)
    Volume -24% · Commission -30%
